@@ -28,7 +28,6 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,12 +48,56 @@ const followersArray = [];
       </div>
     </div>
 */
+import axios from 'axios';
+const cards = document.querySelector('.cards');
+const arr = ['grandelisn', 'tetondan', 'dustinmyers','justsml','luishrd','bigknell'];
 
-/*
-  List of LS Instructors Github username's:
-    tetondan
-    dustinmyers
-    justsml
-    luishrd
-    bigknell
-*/
+let cardConst = obj => {
+  const card = document.createElement("div");
+  const profileImg = document.createElement("img");
+  const info = document.createElement("div");
+  const name = document.createElement("h3");
+  const userName = document.createElement("p");
+  const loc = document.createElement("p");
+  const profile = document.createElement("p");
+  const anchor = document.createElement("a");
+  const followers = document.createElement("p");
+  const following = document.createElement("p");
+  const bio = document.createElement("p");
+  profileImg.src = obj.data.avatar_url;
+  name.textContent = obj.data.name
+  userName.textContent = `Username: ${obj.data.login}`
+  loc.textContent = `Location: ${obj.data.location}`
+  profile.textContent = "Profile:"
+  anchor.href = `${obj.data.html_url}`
+  anchor.textContent = `${obj.data.html_url}`
+  followers.textContent = `${obj.data.followers}`
+  following.textContent = `${obj.data.following}`
+  bio.textContent = `Bio: ${obj.data.bio}`
+  card.classList.add("card");
+  info.classList.add("card-info");
+  name.classList.add("name");
+  userName.classList.add("username");
+  card.appendChild(profileImg);
+  card.appendChild(info);
+  info.appendChild(name);
+  info.appendChild(userName);
+  info.appendChild(loc);
+  info.appendChild(profile);
+  profile.appendChild(anchor);
+  info.appendChild(followers);
+  info.appendChild(following);
+  info.appendChild(bio);
+  console.log(card);
+  return card;
+  }
+
+  arr.forEach((elem) =>{
+     axios.get(`https://api.github.com/users/${elem}`)
+    .then(res => {
+      const cardHolder = cardConst(res);
+      cards.appendChild(cardHolder)
+    })
+    .catch(err => console.log(err))
+  })
+  
